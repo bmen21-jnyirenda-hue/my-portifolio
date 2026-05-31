@@ -73,7 +73,7 @@ CUSTOM_CSS = """
         left: 50%;
         transform: translateX(-50%);
         width: 100vw; /* Page wide */
-        height: 35vh; /* Down 35% of the screen height */
+        height: 40vh; /* Down 40% of the screen height */
         z-index: 0; /* Sits at the bottom layer of the layout */
         pointer-events: none; /* Prevents blocking clicks on the profile text/image */
         user-select: none;
@@ -82,7 +82,7 @@ CUSTOM_CSS = """
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        opacity: 0.5; /* Adjust this to make the image darker or lighter */
+        opacity: 0.7; /* Adjust this to make the image darker or lighter */
     }
 
     /* Elevate the main content so it sits securely on top of the banner */
