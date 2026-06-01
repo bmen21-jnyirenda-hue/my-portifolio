@@ -1,7 +1,5 @@
-import requests
 import streamlit as st
 import base64  
-from requests.exceptions import RequestException
 
 PAGE_TITLE = "John Nyirenda Portfolio"
 PAGE_ICON = "logo.webp"
@@ -13,7 +11,7 @@ CUSTOM_CSS = """
 <style>
     #MainMenu, #footer, #header { visibility: hidden; }
 
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&family=Poppins:wght=500;600;700&display=swap');
 
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
@@ -186,9 +184,10 @@ def render_profile():
             encoded_string = base64.b64encode(image_file.read()).decode()
             
         # 2. Inject the base64 image into the background-image CSS property
+        # FIXED: Changed data format from image/webp to image/jpeg to align correctly with your file extension
         bg_html = f"""
         <div class="image-banner" 
-             style="background-image: url('data:image/webp;base64,{encoded_string}');">
+             style="background-image: url('data:image/jpeg;base64,{encoded_string}');">
         </div>
         """
         st.markdown(bg_html, unsafe_allow_html=True)
@@ -342,21 +341,6 @@ def render_gallery():
             st.info(f"🖼️ [ Image Placeholder ]\n\n**{item}**")
 
 
-def send_contact_form(name: str, email: str, message: str) -> bool:
-    url = f"https://formsubmit.co/ajax/{CONTACT_EMAIL}"
-    payload = {
-        "name": name,
-        "email": email,
-        "message": message,
-        "_subject": f"{name} - Portfolio Message",
-    }
-    try:
-        response = requests.post(url, data=payload, timeout=10)
-        return response.ok
-    except RequestException:
-        return False
-
-
 def render_contact():
     render_section_title("Get In", "Touch")
     left, right = st.columns(2)
@@ -371,23 +355,26 @@ def render_contact():
         st.write("🔗 **LinkedIn:** [linkedin.com/in/john-nyirenda](https://www.linkedin.com/in/john-nyirenda)")
 
     with right:
-        with st.form("contact_form", clear_on_submit=True):
-            st.write("**Send a Direct Message**")
-            name = st.text_input("Full Name")
-            sender_email = st.text_input("Email Address")
-            message = st.text_area("Your Message", height=150)
-            submitted = st.form_submit_button("Submit Message")
-
-            if submitted:
-                if not (name.strip() and sender_email.strip() and message.strip()):
-                    st.warning("Please fill out all fields before submitting.")
-                    return
-
-                with st.spinner("Sending email immediately..."):
-                    if send_contact_form(name.strip(), sender_email.strip(), message.strip()):
-                        st.success("Message sent successfully! John will get back to you soon.")
-                    else:
-                        st.error("Network error. Could not connect to the email server.")
+        # FIXED: Converted FormSubmit to modern browser-native HTML inputs.
+        # This completely resolves WebAssembly network block sandboxing issues.
+        contact_form_html = f"""
+        <form action="https://formsubmit.co/{CONTACT_EMAIL}" method="POST" style="background-color: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 10px; border: 1px solid #d97706; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+            <input type="hidden" name="_subject" value="New Portfolio Message!">
+            <input type="hidden" name="_honeypot" style="display:none">
+            
+            <label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Full Name</label>
+            <input type="text" name="name" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit;">
+            
+            <label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Email Address</label>
+            <input type="email" name="email" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit;">
+            
+            <label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Your Message</label>
+            <textarea name="message" required style="width: 100%; height: 120px; padding: 0.5rem; margin-bottom: 1.2rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit; resize: vertical;"></textarea>
+            
+            <button type="submit" style="background-color: #b45309; color: white; padding: 0.6rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600;">Submit Message</button>
+        </form>
+        """
+        st.markdown(contact_form_html, unsafe_allow_html=True)
 
 
 def render_cv_download():
