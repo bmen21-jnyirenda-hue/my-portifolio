@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Nyirenda | Portfolio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.css" />
+    <style>
+      /* Ensure the app takes the full screen */
+      body, html { height: 100%; margin: 0; padding: 0; }
+      #root { height: 100vh; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="module">
+      import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.js";
+      
+      mount(
+        {
+          requirements: ["requests"], // Needed for your FormSubmit contact block
+          entrypoint: "app.py",
+          files: {
+            // These lines tell the browser to pull your files into the virtual Pyodide environment
+            "app.py": { url: "app.py" },
+            "BGL.jpg": { url: "BGL.jpg" },
+            "profile.png": { url: "profile.png" },
+            "Logo.webp": { url: "Logo.webp" },
+            "JOHN NYIRENDA TEMPLATE RESUME.pdf": { url: "JOHN NYIRENDA TEMPLATE RESUME.pdf" }
+          },
+        },
+        document.getElementById("root")
+      );
+    </script>
+</body>
+</html>
