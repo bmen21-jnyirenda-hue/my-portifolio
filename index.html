@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>John Nyirenda | Portfolio</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.css" />
+    <!-- Swapped to UNPKG CDN to bypass aggressive browser tracking blockers -->
+    <link rel="stylesheet" href="https://unpkg.com/@stlite/browser@0.85.1/build/stlite.css" />
     <style>
       /* Ensure the app takes the full screen */
       body, html { height: 100%; margin: 0; padding: 0; }
@@ -14,15 +15,16 @@
 <body>
     <div id="root"></div>
 
+    <!-- Load the Stlite WebAssembly engine from UNPKG -->
     <script type="module">
-      import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.js";
+      import { mount } from "https://unpkg.com/@stlite/browser@0.85.1/build/stlite.js";
       
       mount(
         {
           requirements: ["requests"], // Needed for your FormSubmit contact block
           entrypoint: "john.py",
           files: {
-            // These lines tell the browser to pull your files into the virtual Pyodide environment
+            // Pulls your files into the virtual Pyodide environment using your custom john.py filename
             "john.py": { url: "john.py" },
             "BGL.jpg": { url: "BGL.jpg" },
             "profile.png": { url: "profile.png" },
