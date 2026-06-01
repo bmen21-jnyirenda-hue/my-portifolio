@@ -184,7 +184,6 @@ def render_profile():
             encoded_string = base64.b64encode(image_file.read()).decode()
             
         # 2. Inject the base64 image into the background-image CSS property
-        # FIXED: Changed data format from image/webp to image/jpeg to align correctly with your file extension
         bg_html = f"""
         <div class="image-banner" 
              style="background-image: url('data:image/jpeg;base64,{encoded_string}');">
@@ -355,25 +354,20 @@ def render_contact():
         st.write("🔗 **LinkedIn:** [linkedin.com/in/john-nyirenda](https://www.linkedin.com/in/john-nyirenda)")
 
     with right:
-        # FIXED: Converted FormSubmit to modern browser-native HTML inputs.
-        # This completely resolves WebAssembly network block sandboxing issues.
+        # ALL HTML tags are pushed to the absolute left margin to prevent Markdown code-block rendering
         contact_form_html = f"""
-        <form action="https://formsubmit.co/{CONTACT_EMAIL}" method="POST" style="background-color: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 10px; border: 1px solid #d97706; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
-            <input type="hidden" name="_subject" value="New Portfolio Message!">
-            <input type="hidden" name="_honeypot" style="display:none">
-            
-            <label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Full Name</label>
-            <input type="text" name="name" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit;">
-            
-            <label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Email Address</label>
-            <input type="email" name="email" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit;">
-            
-            <label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Your Message</label>
-            <textarea name="message" required style="width: 100%; height: 120px; padding: 0.5rem; margin-bottom: 1.2rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit; resize: vertical;"></textarea>
-            
-            <button type="submit" style="background-color: #b45309; color: white; padding: 0.6rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600;">Submit Message</button>
-        </form>
-        """
+<form action="https://formsubmit.co/{CONTACT_EMAIL}" method="POST" style="background-color: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 10px; border: 1px solid #d97706; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+<input type="hidden" name="_subject" value="New Portfolio Message!">
+<input type="hidden" name="_honeypot" style="display:none">
+<label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Full Name</label>
+<input type="text" name="name" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit;">
+<label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Email Address</label>
+<input type="email" name="email" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit;">
+<label style="font-weight: 500; display: block; margin-bottom: 0.4rem; color: #b45309;">Your Message</label>
+<textarea name="message" required style="width: 100%; height: 120px; padding: 0.5rem; margin-bottom: 1.2rem; border-radius: 6px; border: 1px solid #d97706; background: transparent; color: inherit; resize: vertical;"></textarea>
+<button type="submit" style="background-color: #b45309; color: white; padding: 0.6rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600;">Submit Message</button>
+</form>
+"""
         st.markdown(contact_form_html, unsafe_allow_html=True)
 
 
