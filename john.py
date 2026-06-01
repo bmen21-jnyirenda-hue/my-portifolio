@@ -4,7 +4,7 @@ import base64
 from requests.exceptions import RequestException
 
 PAGE_TITLE = "John Nyirenda Portfolio"
-PAGE_ICON = "Logo.webp"
+PAGE_ICON = "logo.webp"
 PROFILE_IMAGE = "profile.png"
 CV_FILE = "JOHN NYIRENDA TEMPLATE RESUME.pdf"
 CONTACT_EMAIL = "jnyirenda971@gmail.com"
@@ -182,7 +182,7 @@ def render_section_title(title, accent=None):
 def render_profile():
     # 1. Read the image and convert to base64 so HTML can display it
     try:
-        with open("BGL.jpg", "rb") as image_file:
+        with open("bgl.jpg", "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode()
             
         # 2. Inject the base64 image into the background-image CSS property
@@ -193,7 +193,7 @@ def render_profile():
         """
         st.markdown(bg_html, unsafe_allow_html=True)
     except FileNotFoundError:
-        st.warning("Background image 'BGL.jpg' not found. Please ensure it is in the same folder.")
+        st.warning("Background image 'bgl.jpg' not found. Please ensure it is in the same folder.")
 
     # --- Proceed with normal profile layout ---
     left, right = st.columns([1, 2.2])
