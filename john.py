@@ -4,7 +4,7 @@ import base64
 PAGE_TITLE = "John Nyirenda Portfolio"
 PAGE_ICON = "logo.webp"
 PROFILE_IMAGE = "profile.png"
-CV_FILE = "JOHN NYIRENDA TEMPLATE RESUME.pdf"
+CV_FILE = "resume.pdf"
 CONTACT_EMAIL = "jnyirenda971@gmail.com"
 
 CUSTOM_CSS = """
