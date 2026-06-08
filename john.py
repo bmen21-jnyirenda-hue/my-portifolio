@@ -217,10 +217,36 @@ def render_profile():
                 """
                 As a Mining Engineering student at the **Malawi University of Business and Applied Sciences (MUBAS)**, I am passionate about transforming the earth's resources into sustainable solutions. With a strong understanding of geology, drilling, blasting, and both surface and underground mining methods, I am building a solid foundation in modern mining practices.
 
-                I thrive on learning, adapting, and solving complex challenges—especially those involving environmental and geotechnical aspects of mining. Outside academics, I enjoy reading, music, and movies. I am always ready for a new adventure or an opportunity to collaborate on something meaningful.
+                I thrive on learning, adapting, and solving complex challenges—especially those involving environmental and geotechnical aspects of mining. I am always ready for a new adventure or an opportunity to collaborate on something meaningful.
+                """
+            )
+        
+        with col2:
+            st.markdown(
+                """
+                <div class='card'>
+                    <h4 style='margin-top: 0;'>More</h4>
+                    <b>Home District:</b> Rumphi<br>
+                    <b>Trad. Authority:</b> Katumbi<br>
+                    <b>Location:</b> Blantyre, Malawi<br>
+                    <b>University:</b> MUBAS<br>
+                    <b>Major:</b> Mining Engineering<br>
+                    <b>Graduation:</b> Class of 2027
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+    st.markdown("<h2>Professional<span class='copper-text'>Objective:</span></h2><hr>", unsafe_allow_html=True)
+
+    col1, col2 = st.columns([2, 1])
+    with col1:
+            st.write(
+                """
+                To become associated with an organization where I can utilize my skills and gain further experience while enhancing the organization’s productivity.
                 """
             )
             st.write("**Core Values:** Discipline • Continuous Learning • Innovation • Professionalism")
+
 
         with col2:
             st.markdown(
