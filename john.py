@@ -438,7 +438,7 @@ def render_cv_download():
                     use_container_width=True,
                 )
         except FileNotFoundError:
-            st.warning(f"Place '{CV_FILE}' in the same folder to enable CV download.")
+            st.warning(f"Place '{CV_FILE}' in the same folder to enable resume download.")
 
 
 def render_footer():
