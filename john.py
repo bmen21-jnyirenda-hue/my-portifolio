@@ -525,7 +525,7 @@ def render_chatbot():
     # Initialize message log history array in state memory
     if "messages" not in st.session_state:
         st.session_state.messages = [
-            {"role": "assistant", "avatar": "⛏️", "content": "Hi there! I am John's AI assistant. Ask me about my experience at the Geological Survey Department, my GIS projects, or my studies at MUBAS!"}
+            {"role": "assistant", "avatar": "⛏️", "content": "Hi there! I am John's AI assistant. What do you what to know about me?"}
         ]
 
     # Render previous interactions onto screen container layout layers
