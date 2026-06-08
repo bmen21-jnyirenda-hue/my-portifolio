@@ -1,5 +1,7 @@
 import streamlit as st
 import base64  
+from google import genai
+from google.genai import types  # Required for setting system instructions
 
 PAGE_TITLE = "John Nyirenda | Portfolio"
 PAGE_ICON = "logo.webp"
@@ -26,16 +28,17 @@ CUSTOM_CSS = """
     h1 {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
     }
-/* 🟢 NEW: Controls the OUTSIDE background color in LIGHT MODE */
+
+    /* Controls the OUTSIDE background color in LIGHT MODE */
     .stApp { 
-        background-color: #fffff0 !important; /* Change this for Light Mode (e.g., Soft Off-White) */
+        background-color: #fffff0 !important; 
     }
 
     /* Controls background colors in DARK MODE */
     @media (prefers-color-scheme: dark) {
         h1, h2, h3, h4, h5, h6 { color: #f8fafc !important; }
         .stApp { 
-            background-color: #0f172a !important; /* Change this for Dark Mode (e.g., Deep Dark Blue) */
+            background-color: #0f172a !important; 
         }
     }
 
@@ -45,14 +48,14 @@ CUSTOM_CSS = """
     .subtitle {
         font-size: 1.25rem;
         color: #0f172a;
-        border-left: 4px solid #b45309; /* Earth Copper */
+        border-left: 4px solid #b45309; 
         padding-left: 1rem;
         margin-bottom: 2rem;
     }
 
     .card {
         background-color: rgba(255, 255, 255, 0.05);
-        border: 1px solid #d97706; /* Subtle borders/cards: Sand Gold */
+        border: 1px solid #d97706; 
         border-radius: 10px;
         padding: 1.5rem;
         margin-bottom: 1rem;
@@ -60,7 +63,7 @@ CUSTOM_CSS = """
     }
 
     hr {
-        border-color: #b45309; /* Earth Copper */
+        border-color: #b45309; 
         border-width: 2px;
         max-width: 100px;
         margin-left: 0;
@@ -74,20 +77,19 @@ CUSTOM_CSS = """
     /* --- BACKGROUND IMAGE BANNER --- */
     .image-banner {
         position: absolute;
-        top: -4rem; /* Starts at the very top of the page */
+        top: -4rem; 
         left: 50%;
         transform: translateX(-50%);
-        width: 100vw; /* Page wide */
-        height: 40vh; /* Down 40% of the screen height */
-        z-index: 0; /* Sits at the bottom layer of the layout */
-        pointer-events: none; /* Prevents blocking clicks on the profile text/image */
+        width: 100vw; 
+        height: 40vh; 
+        z-index: 0; 
+        pointer-events: none; 
         user-select: none;
         
-        /* Image formatting */
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        opacity: 0.5; /* Adjust this to make the image darker or lighter */
+        opacity: 0.5; 
     }
 
     /* Elevate the main content so it sits securely on top of the banner */
@@ -99,10 +101,74 @@ CUSTOM_CSS = """
     
     /* Custom Styling for the Sidebar Menu */
     [data-testid="stSidebarNav"] {
-        display: none; /* Hide default sidebar nav if any */
+        display: none; 
     }
     .css-1544g2n {
-        padding-top: 2rem; /* Give sidebar elements breathing room */
+        padding-top: 2rem; 
+    }
+
+    /* --- SIDEBAR TOGGLE CUSTOMIZATION --- */
+    [data-testid="collapsedControl"] button, 
+    button[aria-label="Expand sidebar"] {
+        width: auto !important;
+        height: auto !important;
+        padding: 8px 14px !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid #d97706 !important;
+        border-radius: 6px !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"] button,
+    button[aria-label="Collapse sidebar"] {
+        width: auto !important;
+        height: auto !important;
+        padding: 6px 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    [data-testid="collapsedControl"] button svg, 
+    button[aria-label="Expand sidebar"] svg,
+    [data-testid="stSidebarCollapseButton"] button svg,
+    button[aria-label="Collapse sidebar"] svg {
+        display: none !important;
+    }
+
+    [data-testid="collapsedControl"] button::before,
+    button[aria-label="Expand sidebar"]::before {
+        content: "☰ Menu" !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.95rem !important;
+        color: #b45309 !important; 
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"] button::before,
+    button[aria-label="Collapse sidebar"]::before {
+        content: "✖ Close" !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.9rem !important;
+        color: #b45309 !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        [data-testid="collapsedControl"] button,
+        button[aria-label="Expand sidebar"] {
+            background-color: #1e293b !important; 
+            border-color: #b45309 !important;
+        }
+        [data-testid="collapsedControl"] button::before,
+        button[aria-label="Expand sidebar"]::before {
+            color: #f8fafc !important; 
+        }
     }
 </style>
 """
@@ -171,12 +237,10 @@ def render_section_title(title, accent=None):
 
 
 def render_profile():
-    # 1. Read the image and convert to base64 so HTML can display it
     try:
         with open("bgl.jpg", "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode()
             
-        # 2. Inject the base64 image into the background-image CSS property
         bg_html = f"""
         <div class="image-banner" 
              style="background-image: url('data:image/jpeg;base64,{encoded_string}');">
@@ -184,9 +248,8 @@ def render_profile():
         """
         st.markdown(bg_html, unsafe_allow_html=True)
     except FileNotFoundError:
-        pass # Image banner skipped if missing
+        pass 
 
-    # --- Proceed with normal profile layout ---
     left, right = st.columns([1, 2.2])
     with left:
         try:
@@ -406,7 +469,6 @@ def render_contact():
         st.write("🔗 **LinkedIn:** [linkedin.com/in/john-nyirenda](https://www.linkedin.com/in/john-nyirenda)")
 
     with right:
-        # ALL HTML tags are pushed to the absolute left margin to prevent Markdown code-block rendering
         contact_form_html = f"""
 <form action="https://formsubmit.co/{CONTACT_EMAIL}" method="POST" style="background-color: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 10px; border: 1px solid #d97706; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
 <input type="hidden" name="_subject" value="New Portfolio Message!">
@@ -438,7 +500,7 @@ def render_cv_download():
                     use_container_width=True,
                 )
         except FileNotFoundError:
-            st.warning(f"Place '{CV_FILE}' in the same folder to enable resume download.")
+            st.warning(f"Place '{CV_FILE}' in the same folder to enable CV download.")
 
 
 def render_footer():
@@ -449,11 +511,73 @@ def render_footer():
     )
 
 
+def render_chatbot():
+    render_section_title("Chat with", "John (AI Assistant)")
+    st.write("Ask me anything about my background, mining engineering projects, or technical skills!")
+
+    # Initialize Gemini client using secure Streamlit Secrets config
+    try:
+        client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+    except Exception:
+        st.error("🔑 Gemini API Key missing! Please set GEMINI_API_KEY inside your Streamlit secrets management settings.")
+        return
+
+    # Initialize message log history array in state memory
+    if "messages" not in st.session_state:
+        st.session_state.messages = [
+            {"role": "assistant", "avatar": "⛏️", "content": "Hi there! I am John's AI assistant. Ask me about my experience at the Geological Survey Department, my GIS projects, or my studies at MUBAS!"}
+        ]
+
+    # Render previous interactions onto screen container layout layers
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"], avatar=message.get("avatar")):
+            st.write(message["content"])
+
+    # Process live incoming input submissions
+    if user_query := st.chat_input("Ask about John's engineering background..."):
+        with st.chat_message("user", avatar="👤"):
+            st.write(user_query)
+        st.session_state.messages.append({"role": "user", "avatar": "👤", "content": user_query})
+
+        # Deep context system instruction block guiding core performance profiles
+        system_prompt = """
+        You are the automated AI persona of John Nyirenda, an elite Mining Engineering Student at MUBAS (Class of 2027). 
+        Your job is to answer professional questions from recruiters, engineers, or managers visiting your portfolio website.
+        
+        Use the following background context to accurately answer questions:
+        - Education: Pursuing a Bachelor of Science (Hons) in Mining Engineering at Malawi University of Business and Applied Sciences (MUBAS). Completed MSCE at Kasungu CCAP Private Secondary School in 2021.
+        - Experience: Completed an Academic Internship at the Geological Survey Department of Malawi (GSD) from July to October 2025. Responsibilities included geospatial mapping, rock classification, and field research data analysis.
+        - Core Projects: Built a Landslide Susceptibility Map & Model for T/A Mwalweni, Rumphi using ArcGIS, QGIS, and Analytic Hierarchy Process (AHP) analysis to isolate hazard zones.
+        - Key Skillsets: QGIS, ArcGIS, AutoCAD, Oasis Montaj, SPSS, Drilling & Blasting optimizations, Rock Mechanics, and fundamental programming in Python and C++.
+        - Credentials: Member of the Malawi Engineering Institution (MEI Student Engineer, 2025), Aspire Leaders Program Alumnus (2025), Pan-African Case Study Challenge Participant (SMAD Initiative, 2025).
+        - Contact Info: Email is jnyirenda971@gmail.com, Phones are +265 990 570 007 and +265 888 021 422.
+        
+        Rules: Be concise, confident, encouraging, and professional. Always speak in the first person ("I did...", "My project...") or refer to yourself as John's AI representative. If asked about something completely outside this context, politely guide them back to your mining engineering portfolio.
+        """
+
+        with st.spinner("John is thinking..."):
+            try:
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=user_query,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt,
+                        temperature=0.4,
+                    )
+                )
+                ai_response = response.text
+            except Exception as e:
+                ai_response = f"Sorry, I ran into an error communicating with the server: {str(e)}"
+
+        with st.chat_message("assistant", avatar="⛏️"):
+            st.write(ai_response)
+        st.session_state.messages.append({"role": "assistant", "avatar": "⛏️", "content": ai_response})
+
+
 # ==========================================
 # EXECUTE APPLICATION (SIDEBAR LAYOUT)
 # ==========================================
 
-# 1. Create the Sidebar Navigation Menu
 st.sidebar.markdown(f"<h2 style='text-align: center; color: #b45309;'>Menu</h2>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
@@ -467,13 +591,13 @@ menu_selection = st.sidebar.radio(
         "🔬 Projects", 
         "⚙️ Skills", 
         "👥 Referees",
-        "🖼️ Gallery"
+        "🖼️ Gallery",
+        "🤖 Ask John"
     ]
 )
 
 st.sidebar.markdown("---")
 
-# 2. Render content based on sidebar selection
 if menu_selection == "🏠 Home":
     render_profile()
     st.markdown(" ")
@@ -501,4 +625,7 @@ elif menu_selection == "👥 Referees":
     render_referees()
 
 elif menu_selection == "🖼️ Gallery":
-    render_gallery()
+    render_gallery()    
+
+elif menu_selection == "🤖 Ask John":
+    render_chatbot()
