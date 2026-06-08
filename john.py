@@ -106,24 +106,6 @@ PROJECTS = [
         "desc": "Comprehensive spatial analysis mapping potential landslide zones in high-risk areas using multi-criteria decision analysis.",
         "tools": "ArcGIS, QGIS, Remote Sensing Data",
         "results": "Developed a high-accuracy predictive map integrating topographical, geological, and hydrological parameters."
-    },
-    {
-        "title": "Geotechnical Slope Stability Analysis",
-        "desc": "Advanced simulation and analysis of open-pit mine slopes to determine factors of safety under various conditions.",
-        "tools": "Slide2, Geotechnical Data, Excel",
-        "results": "Provided actionable recommendations balancing safety with optimal ore extraction ratios."
-    },
-    {
-        "title": "AHP and LSI Modelling Implementation",
-        "desc": "Integrating Analytical Hierarchy Process (AHP) with Landslide Susceptibility Index (LSI) for precise terrain evaluation.",
-        "tools": "QGIS, Python, Statistical Models",
-        "results": "Successfully calibrated a weighted overlay model applicable to various mining environments in Malawi."
-    },
-    {
-        "title": "Strategic Mine Planning Study",
-        "desc": "Conceptual mine scheduling and block modeling for an underground ore deposit.",
-        "tools": "Maptek Vulcan, MineSched",
-        "results": "Produced a 5-year conceptual extraction schedule optimizing net present value (NPV)."
     }
 ]
 
@@ -146,8 +128,11 @@ RELEVANT_COURSES_RIGHT = [
 ENGINEERING_SKILLS = {
     "GIS": 70,
     "Oasis Montaj": 60,
-    "Excel": 75,
-    "Slide2": 50,
+    "Microsoft Suite (Excel, Word & More)": 75,
+    "Flac3D": 30,
+    "AutoCAD": 50,
+    "Slide2": 40,
+    "C++": 40,
     "Python": 40,
 }
 
@@ -175,6 +160,7 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 def render_section_title(title, accent=None):
     accent_markup = f" <span class='copper-text'>{accent}</span>" if accent else ""
     st.markdown(f"<h2>{title}{accent_markup}</h2><hr>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
 
 def render_profile():
@@ -236,34 +222,16 @@ def render_profile():
                 """,
                 unsafe_allow_html=True,
             )
-    st.markdown("<h2>Professional<span class='copper-text'>Objective:</span></h2><hr>", unsafe_allow_html=True)
+        st.markdown("<h2>Professional<span class='copper-text'>Objective:</span></h2><hr>", unsafe_allow_html=True)
 
-    col1, col2 = st.columns([2, 1])
-    with col1:
+        col1, col2 = st.columns([2, 1])
+        with col1:
             st.write(
                 """
                 To become associated with an organization where I can utilize my skills and gain further experience while enhancing the organization’s productivity.
                 """
             )
             st.write("**Core Values:** Discipline • Continuous Learning • Innovation • Professionalism")
-
-
-        with col2:
-            st.markdown(
-                """
-                <div class='card'>
-                    <h4 style='margin-top: 0;'>More</h4>
-                    <b>Home District:</b> Rumphi<br>
-                    <b>Trad. Authority:</b> Katumbi<br>
-                    <b>Location:</b> Blantyre, Malawi<br>
-                    <b>University:</b> MUBAS<br>
-                    <b>Major:</b> Mining Engineering<br>
-                    <b>Graduation:</b> Class of 2027
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
 
 def render_experience():
     render_section_title("Professional", "Experience")
@@ -449,7 +417,7 @@ st.sidebar.markdown("---")
 # 2. Render content based on sidebar selection
 if menu_selection == "🏠 Home":
     render_profile()
-    st.markdown("---")
+    st.markdown(" ")
     render_contact()
     st.markdown("---")
     render_cv_download()
