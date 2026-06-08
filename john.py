@@ -1,7 +1,7 @@
 import streamlit as st
 import base64  
 
-PAGE_TITLE = "John Nyirenda Portfolio"
+PAGE_TITLE = "John Nyirenda | Portfolio"
 PAGE_ICON = "logo.webp"
 PROFILE_IMAGE = "profile.png"
 CV_FILE = "resume.pdf"
@@ -26,10 +26,17 @@ CUSTOM_CSS = """
     h1 {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
     }
+/* 🟢 NEW: Controls the OUTSIDE background color in LIGHT MODE */
+    .stApp { 
+        background-color: #fffff0 !important; /* Change this for Light Mode (e.g., Soft Off-White) */
+    }
 
+    /* Controls background colors in DARK MODE */
     @media (prefers-color-scheme: dark) {
         h1, h2, h3, h4, h5, h6 { color: #f8fafc !important; }
-        .stApp { background-color: #0f172a; }
+        .stApp { 
+            background-color: #0f172a !important; /* Change this for Dark Mode (e.g., Deep Dark Blue) */
+        }
     }
 
     /* Primary text/accent: Earth Copper */
@@ -80,7 +87,7 @@ CUSTOM_CSS = """
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        opacity: 0.7; /* Adjust this to make the image darker or lighter */
+        opacity: 0.5; /* Adjust this to make the image darker or lighter */
     }
 
     /* Elevate the main content so it sits securely on top of the banner */
@@ -102,16 +109,16 @@ CUSTOM_CSS = """
 
 PROJECTS = [
     {
-        "title": "Landslide Susceptibility Mapping",
-        "desc": "Comprehensive spatial analysis mapping potential landslide zones in high-risk areas using multi-criteria decision analysis.",
-        "tools": "ArcGIS, QGIS, Remote Sensing Data",
-        "results": "Developed a high-accuracy predictive map integrating topographical, geological, and hydrological parameters."
+        "title": "Landslide Susceptibility Mapping using GIS & Remote Sensing",
+        "desc": "Developed a detailed landslide susceptibility model utilizing Geographic Information Systems (GIS) and remote sensing techniques for hazard assessment at T/A Mwalweni Area, Rumphi.",
+        "tools": "ArcGIS, QGIS, Remote Sensing Data, Analytic Hierarchy Process (AHP)",
+        "results": "Created a Landslide Susceptibility Index to produce susceptibility maps identifying high-risk zones. Evaluated key conditioning factors (slope, geology, land use, rainfall) supporting disaster mitigation."
     }
 ]
 
 RELEVANT_COURSES_LEFT = [
     {"name": "Surface & Underground Mining Methods", "desc": "Techniques for extracting minerals from open pits and subterranean environments."},
-    {"name": "Geotechnical Engineering & Rock Mechanics", "desc": "Analysis of rock and soil behavior to ensure safe mining excavations and slopes."},
+    {"name": "Geotechnical Engineering & Rock Mechanics", "desc": "Analysis of rock and soil behaviour to ensure safe mining excavations and slopes."},
     {"name": "Drilling and Blasting Engineering", "desc": "Design and optimization of explosive fragmentation for efficient ore extraction."},
     {"name": "Structural & Applied Geology", "desc": "Understanding rock structures and geological formations relevant to mineral exploration."},
     {"name": "Mineral Processing Methods", "desc": "Techniques for separating valuable minerals from waste rock efficiently."}
@@ -122,29 +129,29 @@ RELEVANT_COURSES_RIGHT = [
     {"name": "Mine Ventilation & Safety", "desc": "Designing airflow systems to maintain safe and healthy underground working conditions."},
     {"name": "Mineral Economics & Investment Evaluation", "desc": "Financial analysis, feasibility studies, and risk assessment for mining projects."},
     {"name": "Geo-Statistics & Spatial Analysis", "desc": "Applying statistical models and GIS tools for resource estimation and mapping."},
-    {"name": "Numerical Methods in Geo-mechanics", "desc": "Computational modeling for complex structural and geotechnical mining problems."}
+    {"name": "Numerical Methods in Geo-mechanics", "desc": "Computational modelling for complex structural and geotechnical mining problems."}
 ]
 
 ENGINEERING_SKILLS = {
-    "GIS": 70,
-    "Oasis Montaj": 60,
-    "Microsoft Suite (Excel, Word & More)": 75,
-    "Flac3D": 30,
-    "AutoCAD": 50,
-    "Slide2": 40,
-    "C++": 40,
-    "Python": 40,
+    "QGIS & ArcGIS": 80,
+    "Microsoft Office Suite (Excel, PPT, Word)": 85,
+    "Oasis Montaj & PCI Geomatica": 65,
+    "SPSS (Statistical Analysis)": 60,
+    "AutoCAD": 55,
+    "FLAC3D (Basics)": 35,
+    "Python (Basics)": 40,
+    "C++ (Basics)": 40,
 }
 
 TECHNICAL_SKILLS = [
-    "GIS Mapping",
-    "Geology",
-    "Drilling & Blasting",
+    "Geospatial Analysis",
+    "Rock Identification & Classifications",
+    "Drilling & Blasting Optimization",
     "Remote Sensing",
-    "Spatial Analysis",
-    "Geotechnical Analysis",
-    "Organizational Effectiveness",
-    "Training Assessment",
+    "Surveying & Field Research",
+    "Geotechnical Engineering",
+    "Environmental & Mine Management",
+    "Technical Presentations",
 ]
 
 st.set_page_config(
@@ -177,7 +184,7 @@ def render_profile():
         """
         st.markdown(bg_html, unsafe_allow_html=True)
     except FileNotFoundError:
-        st.warning("Background image 'bgl.jpg' not found. Please ensure it is in the same folder.")
+        pass # Image banner skipped if missing
 
     # --- Proceed with normal profile layout ---
     left, right = st.columns([1, 2.2])
@@ -201,9 +208,9 @@ def render_profile():
         with col1:
             st.write(
                 """
-                As a Mining Engineering student at the **Malawi University of Business and Applied Sciences (MUBAS)**, I am passionate about transforming the earth's resources into sustainable solutions. With a strong understanding of geology, drilling, blasting, and both surface and underground mining methods, I am building a solid foundation in modern mining practices.
+                As a Mining Engineering student at the **Malawi University of Business and Applied Sciences (MUBAS)**, I am passionate about transforming the earth's resources using sustainable solutions. With a strong understanding of geology, drilling, blasting, together with both surface and underground mining methods, I am building a solid understanding of modern mining practices. 
 
-                I thrive on learning, adapting, and solving complex challenges—especially those involving environmental and geotechnical aspects of mining. I am always ready for a new adventure or an opportunity to collaborate on something meaningful.
+                I thrive on learning, adapting, and solving complex challenges, especially those involving environmental and geotechnical aspects of mining. I am an efficient, hardworking, accountable, and result-oriented person who desires to produce excellent products and services to meet organizational objectives.
                 """
             )
         
@@ -211,44 +218,51 @@ def render_profile():
             st.markdown(
                 """
                 <div class='card'>
-                    <h4 style='margin-top: 0;'>More</h4>
-                    <b>Home District:</b> Rumphi<br>
-                    <b>Trad. Authority:</b> Katumbi<br>
+                    <h4 style='margin-top: 0;'>Quick Facts</h4>
+                    <b>Nationality:</b> Malawian<br>
                     <b>Location:</b> Blantyre, Malawi<br>
+                    <b>Languages:</b> English, Chichewa, Tumbuka<br>
                     <b>University:</b> MUBAS<br>
-                    <b>Major:</b> Mining Engineering<br>
+                    <b>Degree:</b> BSc in Mining Engineering<br>
                     <b>Graduation:</b> Class of 2027
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-        st.markdown("<h2>Professional<span class='copper-text'>Objective:</span></h2><hr>", unsafe_allow_html=True)
+        st.markdown("<h2>Professional <span class='copper-text'>Objective:</span></h2><hr>", unsafe_allow_html=True)
 
         col1, col2 = st.columns([2, 1])
         with col1:
             st.write(
                 """
-                To become associated with an organization where I can utilize my skills and gain further experience while enhancing the organization’s productivity.
+                To become associated with an organization where I can utilize my skills and gain further experience while enhancing the organization’s productivity and commitment to sustainable resource extraction.
                 """
             )
-            st.write("**Core Values:** Discipline • Continuous Learning • Innovation • Professionalism")
+            st.write("**Core Attributes:** Efficient • Hardworking • Accountable • Result-Oriented")
 
 def render_experience():
     render_section_title("Professional", "Experience")
-    left, _ = st.columns(2)
+    left, right = st.columns([1, 1.5])
     with left:
         st.markdown(
             """
             <div class='card'>
-                <h4 style='margin-top: 0; color: #b45309;'>Geological Survey Department</h4>
-                <b>Intern</b><br>
-                <i>Mzuzu, Northern Region, Malawi</i><br>
+                <h4 style='margin-top: 0; color: #b45309;'>Geological Survey Department (GSD)</h4>
+                <b>Academic Attachment (Intern)</b><br>
                 <span style='color: #94a3b8;'>July 2025 - October 2025</span>
             </div>
             """,
             unsafe_allow_html=True,
         )
-
+    with right:
+        st.write("### Key Responsibilities:")
+        st.write("""
+        - Conducted detailed data analysis and synthesized field findings.
+        - Assisted in surveying and technical field research.
+        - Utilized GIS software for map-making and spatial data interpretation.
+        - Performed rock identification and geological classifications.
+        - Prepared and delivered comprehensive PowerPoint presentations on project progress and findings.
+        """)
 
 def render_academic_background():
     render_section_title("Academic", "Background")
@@ -257,25 +271,24 @@ def render_academic_background():
     with left:
         st.subheader("Education")
         st.write("**Malawi University of Business and Applied Sciences (MUBAS)**")
-        st.write("*Bachelor of Science in Mining and Mineral Engineering*")
-        st.caption("January 2022 — September 2027 (Expected)")
+        st.write("*Bachelor of Science in Mining Engineering (Hons)*")
+        st.caption("2022 — 2027 (Expected)")
         st.write("Comprehensive academic curriculum focusing on earth sciences, extraction methodologies, safety protocols, and modern computational engineering tools.")
 
-        st.markdown("<br>**Kasungu CCAP Secondary School**", unsafe_allow_html=True)
+        st.markdown("<br>**Kasungu CCAP Private Secondary School**", unsafe_allow_html=True)
         st.write("*Malawi School Certificate of Education (MSCE)*")
-        st.caption("2021")
+        st.caption("Graduated: 2021")
 
     with right:
         st.subheader("Certifications & Achievements")
-        st.success("🏅 **Malawi Engineering Institution**")
-        st.success("🏅 **Aspire Program**")
-        st.success("🏅 **The Pan-African Case Study Challenge 2025**")
-        st.success("🏅 **Strategies to Learn and Upskill More Effectively**")
+        st.success("🏅 **Student Engineer** – Malawi Engineering Institution (MEI) (2025)")
+        st.success("🏅 **Aspire Leaders Program** – Aspire Institute (October 2025)")
+        st.success("🏅 **The Pan-African Case Study Challenge** – SMAD Initiative (July 2025)")
 
 
 def render_courses():
     render_section_title("Relevant", "Courses")
-    st.write("A selection of core modules from the Bachelor of Mining Engineering (Honours) curriculum:")
+    st.write("A selection of core modules from the Bachelor of Science in Mining Engineering curriculum:")
     left, right = st.columns(2)
 
     with left:
@@ -293,7 +306,7 @@ def render_projects():
     for index, project in enumerate(PROJECTS):
         column = left if index % 2 == 0 else right
         with column:
-            with st.expander(f"🗺️ {project['title']}", expanded=True):
+            with st.expander(f"🗺️ {project['title']} (2026)", expanded=True):
                 st.write(f"**Description:** {project['desc']}")
                 st.write(f"**Outcome:** {project['results']}")
                 st.caption(f"**Tools Used:** {project['tools']}")
@@ -304,7 +317,7 @@ def render_skills():
     left, right = st.columns(2)
 
     with left:
-        st.subheader("Engineering Software")
+        st.subheader("Engineering & IT Software")
         for skill, level in ENGINEERING_SKILLS.items():
             st.write(f"**{skill}**")
             st.progress(level)
@@ -314,8 +327,53 @@ def render_skills():
         st.write(" • ".join(TECHNICAL_SKILLS))
         st.write("")
         st.subheader("Computer Skills")
-        st.write("Microsoft Office Suite • Data Analysis • Presentation Design • Report Formatting • Technical Troubleshooting")
+        st.write("Microsoft Office Suite • Presentation Design • Report Formatting • Technical Troubleshooting")
 
+def render_referees():
+    render_section_title("Professional", "Referees")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown(
+            """
+            <div class='card'>
+                <h4 style='margin-top: 0; color: #b45309;'>Mr. Harrison Mtumbuka</h4>
+                <b>Regional Geologist</b><br>
+                <i>Geological Survey Department of Malawi</i><br><br>
+                📍 P/Bag 9, Mzuzu<br>
+                📞 +265 999 08 82 66<br>
+                📞 +265 883 24 01 05<br>
+                📧 mtumbukaharris@gmail.com
+            </div>
+            """, unsafe_allow_html=True
+        )
+    with col2:
+        st.markdown(
+            """
+            <div class='card'>
+                <h4 style='margin-top: 0; color: #b45309;'>Dr. T. S. Banda</h4>
+                <b>Mechanical Engineering Faculty</b><br>
+                <i>Malawi University of Business and Applied Sciences</i><br><br>
+                📍 P/Bag 303 Chichiri, Blantyre 3<br>
+                📞 Via MUBAS Department<br><br>
+                📧 tbanda@mubas.ac.mw
+            </div>
+            """, unsafe_allow_html=True
+        )
+    with col3:
+        st.markdown(
+            """
+            <div class='card'>
+                <h4 style='margin-top: 0; color: #b45309;'>Mr. Daniel Moyo</h4>
+                <b>Geologist</b><br>
+                <i>Geological Survey Department of Malawi</i><br><br>
+                📍 P/Bag 9, Mzuzu<br>
+                📞 +265 998 49 10 32<br>
+                📞 +265 883 07 57 71<br>
+                📧 moyodanj@gmail.com
+            </div>
+            """, unsafe_allow_html=True
+        )
 
 def render_gallery():
     render_section_title("Portfolio", "Gallery")
@@ -342,9 +400,9 @@ def render_contact():
         st.write("Open to networking, research collaborations, and early-career opportunities in the mining and earth sciences sectors.")
         st.write("📧 **Email:** bmen21-jnyirenda@mubas.ac.mw")
         st.write(f"📧 **Email:** {CONTACT_EMAIL}")
-        st.write("📞 **Phone:** +265 99 057 0007")
-        st.write("📞 **Phone:** +265 88 802 1422")
-        st.write("📍 **Location:** Blantyre, Malawi")
+        st.write("📞 **Phone:** +265 990 570 007")
+        st.write("📞 **Phone:** +265 888 021 422")
+        st.write("📍 **Location:** Malawi University of Business and Applied Sciences, P/Bag 303. Chichiri, Blantyre")
         st.write("🔗 **LinkedIn:** [linkedin.com/in/john-nyirenda](https://www.linkedin.com/in/john-nyirenda)")
 
     with right:
@@ -380,7 +438,7 @@ def render_cv_download():
                     use_container_width=True,
                 )
         except FileNotFoundError:
-            st.warning(f"Place {CV_FILE} in the same folder to enable CV download.")
+            st.warning(f"Place '{CV_FILE}' in the same folder to enable CV download.")
 
 
 def render_footer():
@@ -408,6 +466,7 @@ menu_selection = st.sidebar.radio(
         "📚 Courses", 
         "🔬 Projects", 
         "⚙️ Skills", 
+        "👥 Referees",
         "🖼️ Gallery"
     ]
 )
@@ -437,6 +496,9 @@ elif menu_selection == "🔬 Projects":
 
 elif menu_selection == "⚙️ Skills":
     render_skills()
+    
+elif menu_selection == "👥 Referees":
+    render_referees()
 
 elif menu_selection == "🖼️ Gallery":
     render_gallery()
